@@ -52,16 +52,6 @@ const getNote = (id) => {
   return foundedNote;
 }
 
-const getActiveNotes = () => {
-  const activeNotes = notes.filter((note) => !note.archived);
-  return activeNotes;
-}
-
-const getArchivedNotes = () => {
-  const archivedNotes = notes.filter((note) => note.archived);
-  return archivedNotes;
-}
-
 const addNote = ({ title, body }) => {
   notes = [...notes, {
     id: `notes-${+new Date()}`, title: title || '(untitled)', body, createdAt: new Date().toISOString(), archived: false,
@@ -72,29 +62,20 @@ const deleteNote = (id) => {
   notes = notes.filter((note) => note.id !== id);
 }
 
-const archiveNote = (id) => {
+const handleArchiveNote = (id) => {
   notes = notes.map((note) => {
     if (note.id === id) {
-      return { ...note, archived: true };
+      return { ...note, archived: note.id === id ? !note.archived : note.archived, };
     }
-    return note;
-  });
-}
-
-const unarchiveNote = (id) => {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      return { ...note, archived: false };
-    }
-
     return note;
   });
 }
 
 const editNote = ({ id, title, body }) => {
   const noteToEdit = notes.find((note) => note.id === id);
-  noteToEdit.title = title;
-  noteToEdit.body = body;
+  console.log(noteToEdit);
+  noteToEdit.title = title || noteToEdit.title;
+  noteToEdit.body = body || noteToEdit.body;
 
   notes = notes.map((note) => {
     if (note.id === id) {
@@ -151,13 +132,10 @@ const generateQuotes = () => ([
 
 export {
   getAllNotes,
-  getActiveNotes,
-  getArchivedNotes,
   deleteNote,
   editNote,
   getNote,
-  archiveNote,
-  unarchiveNote,
+  handleArchiveNote,
   addNote,
   getNavigationsLink,
   generateQuotes

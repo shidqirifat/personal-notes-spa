@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { useSearchParams } from 'react-router-dom';
-import ButtonAddNewNote from '../components/ButtonAddNewNote';
+import ButtonActionRounded from '../components/ButtonActionRounded';
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import NavigationWrapper from '../components/NavigationWrapper';
 import NewNote from '../components/NewNote';
 import WrapCardNote from '../components/WrapCardNote';
-import { generateQuotes, getAllNotes, getNavigationsLink } from '../utils/data';
+import { handleArchiveNote, deleteNote, generateQuotes, getAllNotes, getNavigationsLink } from '../utils/data';
 import PropTypes from 'prop-types';
+import ButtonActionRoundedWrapper from '../components/ButtonActionRoundedWrapper';
 
 export default function PageListNoteWrapper({ pageActive }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,6 +37,7 @@ class PageListNote extends Component {
       },
       isAddNote: false,
       idMenuActive: '',
+      isLoading: true,
     };
 
     this.onSearchNoteHandler = this.onSearchNoteHandler.bind(this);
@@ -46,11 +48,13 @@ class PageListNote extends Component {
     this.onDeleteNoteHandler = this.onDeleteNoteHandler.bind(this);
     this.onArchiveNoteHandler = this.onArchiveNoteHandler.bind(this);
     this.generateRandomQuotes = this.generateRandomQuotes.bind(this);
+    this.setTimeLoading = this.setTimeLoading.bind(this);
   }
 
   onSearchNoteHandler(event) {
     const keyword = event.target.value;
 
+    this.setTimeLoading(1000);
     this.setState((prevState) => ({
       ...prevState,
       keyword,
@@ -81,6 +85,7 @@ class PageListNote extends Component {
   onAddNewNoteHandler(event, note) {
     event.preventDefault();
 
+    this.setTimeLoading(1000);
     this.setState((prevState) => ({
       ...prevState,
       notes: [
@@ -108,25 +113,18 @@ class PageListNote extends Component {
 
   onDeleteNoteHandler(event, id) {
     event.stopPropagation();
+    this.setTimeLoading(1000);
 
-    const noteAfterDelete = this.state.notes.filter(
-      (note) => note.id !== id
-    );
-    this.setState((prevState) => ({
-      ...prevState,
-      notes: noteAfterDelete,
-    }));
+    deleteNote(id);
   }
 
   onArchiveNoteHandler(event, id) {
     event.stopPropagation();
-    const noteAfterArchive = this.state.notes.map((note) => ({
-      ...note,
-      archived: note.id === id ? !note.archived : note.archived,
-    }));
+    this.setTimeLoading(1000);
+
+    handleArchiveNote(id);
     this.setState((prevState) => ({
       ...prevState,
-      notes: noteAfterArchive,
       idMenuActive: null,
     }));
   }
@@ -140,8 +138,29 @@ class PageListNote extends Component {
     }));
   }
 
+  setTimeLoading(miliseconds) {
+    this.setState((prevState) => ({
+      ...prevState,
+      isLoading: true,
+    }));
+
+    setTimeout(() => {
+      this.setState((prevState) => ({
+        ...prevState,
+        isLoading: false,
+      }));
+    }, miliseconds);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.pageActive !== this.props.pageActive) {
+      this.setTimeLoading(1000);
+    }
+  }
+
   componentDidMount() {
     this.generateRandomQuotes();
+    this.setTimeLoading(1000);
   }
 
   render() {
@@ -152,11 +171,17 @@ class PageListNote extends Component {
       return note
     }
 
-    const notes = this.state.notes.filter((note) => {
-      return note.title.toLowerCase().includes(
-        this.state.keyword.toLowerCase()
-      ) && isFilterArchived(note, this.props.pageActive);
-    });
+    const notes = getAllNotes()
+      .filter((note) => {
+        return note.title.toLowerCase().includes(
+          this.state.keyword.toLowerCase()
+        ) && isFilterArchived(note, this.props.pageActive);
+      })
+      .sort((a, b) => (b.createdAt < a.createdAt)
+        ? -1
+        : ((b.createdAt > a.createdAt)
+          ? 1
+          : 0));
 
     const renderTextEmpty = () => {
       const { notes, keyword } = this.state;
@@ -191,6 +216,7 @@ class PageListNote extends Component {
               navigationActive={this.props.pageActive}
             />
             <WrapCardNote
+              loading={this.state.isLoading}
               textEmpty={textEmpty}
               notes={notes}
               onDeleteNote={this.onDeleteNoteHandler}
@@ -200,7 +226,9 @@ class PageListNote extends Component {
             />
           </div>
           <Footer />
-          <ButtonAddNewNote onClick={this.onOpenAddNoteHandler} />
+          <ButtonActionRoundedWrapper>
+            <ButtonActionRounded type="add-note" onClick={this.onOpenAddNoteHandler} />
+          </ButtonActionRoundedWrapper>
         </div>
       </>
     )

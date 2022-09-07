@@ -33,8 +33,13 @@ textarea::placeholder {
   font-weight: bold;
 }
 
+button {
+  cursor: pointer;
+}
+
 a {
   text-decoration: none;
+  cursor: pointer;
 }
 
 .wrapper-box-notes {
@@ -236,29 +241,55 @@ a {
   border: 1px solid #bcbcc0;
 }
 
-.icon-wrapper {
+.icon-action-wrapper {
   position: fixed;
   right: 30px;
   bottom: 30px;
-  border-radius: 50%;
-  background-color: #2d3e50;
-  display: grid;
-  align-items: center;
-  box-shadow: 0px 7px 40px 4px rgba(0, 0, 0, 0.34);
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  transition: 0.2s all;
+  display: flex;
+  gap: 12px;
 }
 
-.icon-wrapper:hover {
+.icon-action-button {
+  border-radius: 50%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+  transition: 0.2s all;
+  border: none;
+  outline: none;
+}
+
+.icon-action-button.add-note {
+  background-color: #2d3e50;
+  box-shadow: 0px 7px 40px 4px rgba(0, 0, 0, 0.34);
+}
+
+.icon-action-button.add-note:hover {
   background-color: #1f2b38;
   border-color: #1b252f;
 }
 
-.icon-wrapper img {
-  width: 30px;
+.icon-action-button.archive-note,
+.icon-action-button.archived-note,
+.icon-action-button.delete-note {
+  background-color: rgb(227, 227, 227);
+  box-shadow: 0px 7px 40px 10px rgba(0, 0, 0, 0.07);
+}
+
+.icon-action-button.archive-note:hover,
+.icon-action-button.archived-note:hover,
+.icon-action-button.delete-note:hover {
+  background-color: rgb(220, 220, 220);
+}
+
+.icon-action-button img {
+  width: 26px;
+}
+
+.icon-action-button.add-note img {
   filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(109deg) brightness(107%) contrast(101%);
 }
 

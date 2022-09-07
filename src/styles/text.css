@@ -36,7 +36,8 @@
     -webkit-box-orient: vertical;
 }
 
-.text-date {
+.text-date,
+.text-detail-date {
     color: rgb(139, 139, 139);
     font-size: 0.75rem;
     margin-bottom: 4px;
@@ -56,4 +57,40 @@
 
 .text-action:hover {
     background-color: #f0f0f0;
+}
+
+.title-detail-note {
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 56px;
+    color: #3f3f45;
+}
+
+.text-detail-date {
+    font-size: 1rem;
+    color: rgb(100, 100, 100);
+    font-weight: 400;
+    line-height: 16px;
+    margin-top: 8px;
+    margin-bottom: 24px;
+}
+
+.text-detail-note {
+    font-size: 1.1rem;
+    color: #3F3F45;
+    line-height: 26px;
+}
+
+.text-anchor-back {
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #3F3F45;
+    line-height: 32px;
+}
+
+.text-not-found {
+    font-size: 1.2rem;
+    color: white;
+    font-weight: 600;
+    line-height: 38px;
 }

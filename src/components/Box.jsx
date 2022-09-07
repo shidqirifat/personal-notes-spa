@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function Box({ id, style, children }) {
     return (
-        <Link to={`notes/${id}`}>
+        <Link to={`/notes/${id}`}>
             <div className="box-wrapper" style={style} >
                 {children}
             </div>

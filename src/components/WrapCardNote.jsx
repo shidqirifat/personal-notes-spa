@@ -1,9 +1,11 @@
 import React from "react";
 import CardNote from "./CardNote";
 import EmptyNotes from "./EmptyNotes";
+import Loader from "./Loader";
 import PropTypes from 'prop-types';
 
 export default function WrapCardNote({
+    loading,
     textEmpty,
     notes,
     idMenuActive,
@@ -13,7 +15,9 @@ export default function WrapCardNote({
 }) {
     return (
         <>
-            {notes.length === 0 ? (
+            {loading ? (
+                <Loader />
+            ) : notes.length === 0 ? (
                 <EmptyNotes>{textEmpty}</EmptyNotes>
             ) : (
                 <div className="wrapper-box-notes">
@@ -34,6 +38,7 @@ export default function WrapCardNote({
 }
 
 WrapCardNote.propTypes = {
+    loading: PropTypes.bool.isRequired,
     textEmpty: PropTypes.string.isRequired,
     notes: PropTypes.arrayOf(PropTypes.object).isRequired,
     idMenuActive: PropTypes.string,
