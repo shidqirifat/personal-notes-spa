@@ -13,6 +13,7 @@ import {
     generateQuotes,
     getAllNotes,
     getNavigationsLink,
+    addNote,
 } from "../utils/data";
 import PropTypes from "prop-types";
 import ButtonActionRoundedWrapper from "../components/global/ButtonActionRoundedWrapper";
@@ -104,20 +105,11 @@ class PageListNote extends Component {
 
     onAddNewNoteHandler(event, note) {
         event.preventDefault();
-
         this.setActionDuration("isLoading", 1000);
+
+        addNote({ title: note.title, body: note.description })
         this.setState((prevState) => ({
             ...prevState,
-            notes: [
-                ...prevState.notes,
-                {
-                    id: `notes-${+new Date()}`,
-                    title: note.title,
-                    body: note.description,
-                    archived: false,
-                    createdAt: new Date().toISOString(),
-                },
-            ],
             keyword: "",
         }));
     }
@@ -162,8 +154,6 @@ class PageListNote extends Component {
             quotes,
         }));
     }
-
-    renderNotifDeleteNote() { }
 
     setActionDuration(action, miliseconds, isDelay = false) {
         setTimeout(

@@ -73,7 +73,6 @@ const handleArchiveNote = (id) => {
 
 const editNote = ({ id, title, body }) => {
   const noteToEdit = notes.find((note) => note.id === id);
-  console.log(noteToEdit);
   noteToEdit.title = title || noteToEdit.title;
   noteToEdit.body = body || noteToEdit.body;
 
