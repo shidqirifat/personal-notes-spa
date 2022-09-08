@@ -17,6 +17,8 @@ import {
 import PropTypes from "prop-types";
 import ButtonActionRoundedWrapper from "../components/global/ButtonActionRoundedWrapper";
 import DeleteNotification from "../components/global/DeleteNotification";
+import { Helmet } from 'react-helmet';
+import { capitalize } from "../utils";
 
 export default function PageListNoteWrapper({ pageActive }) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -236,8 +238,14 @@ class PageListNote extends Component {
 
         const textEmpty = renderTextEmpty();
 
+        const titlePage = this.props.pageActive ? `${this.props.pageActive} Note - ` : '';
+
         return (
             <>
+                <Helmet>
+                    <title>{capitalize(titlePage)}My Personal Notes</title>
+                </Helmet>
+
                 <DeleteNotification deleteNotif={this.state.deleteNotif} />
                 {this.state.isAddNote && (
                     <NewNote

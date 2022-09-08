@@ -8,4 +8,8 @@ const showFormattedDate = (date) => {
   return new Date(date).toLocaleDateString('id-ID', options);
 }
 
-export { showFormattedDate };
+const capitalize = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export { showFormattedDate, capitalize };

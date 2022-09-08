@@ -14,6 +14,7 @@ import "../styles/detail.css";
 import Text from "../components/global/Text";
 import PropTypes from "prop-types";
 import Footer from "../components/global/Footer";
+import { Helmet } from 'react-helmet';
 
 export default function PageDetailNoteWrapper() {
     const { id } = useParams();
@@ -29,12 +30,19 @@ class PageDetailNote extends Component {
             notes: getNote(props.id),
         };
 
+        console.log(this.state.notes);
+
         this.handleDeleteNote = this.handleDeleteNote.bind(this);
         this.handleArchiveNote = this.handleArchiveNote.bind(this);
         this.updateDetailNote = this.updateDetailNote.bind(this);
         this.handleEditNote = this.handleEditNote.bind(this);
         this.onInputTitle = this.onInputTitle.bind(this);
         this.onInputBody = this.onInputBody.bind(this);
+        this.handleNoteNotFound = this.handleNoteNotFound.bind(this);
+    }
+
+    handleNoteNotFound() {
+        this.props.navigate('/404');
     }
 
     handleDeleteNote = () => {
@@ -72,43 +80,55 @@ class PageDetailNote extends Component {
         this.updateDetailNote();
     }
 
+    componentDidMount() {
+        if (!this.state.notes) this.handleNoteNotFound();
+    }
+
     render() {
         return (
-            <div className="page-detail-wrapper">
-                <div>
-                    <Header />
-                    <Link to="/" className="anchor-back-wrapper">
-                        <img
-                            className="icon-anchor-back"
-                            src="/assets/right-arrow.png"
-                            alt="arrow"
+            <>
+                <Helmet>
+                    <title>{this.state.notes?.title} - My Personal Notes</title>
+                </Helmet>
+
+                <div className="page-detail-wrapper">
+                    <div>
+                        <Header />
+                        <Link to="/" className="anchor-back-wrapper">
+                            <img
+                                className="icon-anchor-back"
+                                src="/assets/right-arrow.png"
+                                alt="arrow"
+                            />
+                            <Text type="text-anchor-back">Back</Text>
+                        </Link>
+                        {this.state.notes && (
+                            <DetailContentNote
+                                {...this.state.notes}
+                                onInputTitle={this.onInputTitle}
+                                onInputBody={this.onInputBody}
+                            />
+                        )}
+                    </div>
+                    <Footer />
+                    <ButtonActionRoundedWrapper>
+                        <ButtonActionRounded
+                            type={
+                                this.state.notes?.archived
+                                    ? "archived-note"
+                                    : "archive-note"
+                            }
+                            idAction={this.props.id}
+                            onClick={this.handleArchiveNote}
                         />
-                        <Text type="text-anchor-back">Back</Text>
-                    </Link>
-                    <DetailContentNote
-                        {...this.state.notes}
-                        onInputTitle={this.onInputTitle}
-                        onInputBody={this.onInputBody}
-                    />
+                        <ButtonActionRounded
+                            type="delete-note"
+                            idAction={this.props.id}
+                            onClick={this.handleDeleteNote}
+                        />
+                    </ButtonActionRoundedWrapper>
                 </div>
-                <Footer />
-                <ButtonActionRoundedWrapper>
-                    <ButtonActionRounded
-                        type={
-                            this.state.notes.archived
-                                ? "archived-note"
-                                : "archive-note"
-                        }
-                        idAction={this.props.id}
-                        onClick={this.handleArchiveNote}
-                    />
-                    <ButtonActionRounded
-                        type="delete-note"
-                        idAction={this.props.id}
-                        onClick={this.handleDeleteNote}
-                    />
-                </ButtonActionRoundedWrapper>
-            </div>
+            </>
         );
     }
 }
