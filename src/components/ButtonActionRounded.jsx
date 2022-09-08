@@ -20,5 +20,6 @@ export default function ButtonActionRounded({ type, onClick }) {
 }
 
 ButtonActionRounded.propTypes = {
+    type: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired
 }

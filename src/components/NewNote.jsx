@@ -50,7 +50,7 @@ export default class NewNote extends Component {
                         type="title-section"
                         style={{ textAlign: "center", marginTop: 0 }}
                     >
-                        Buat Catatan
+                        Add New Note
                     </Text>
                     <Text
                         type="paragraph"
@@ -66,7 +66,7 @@ export default class NewNote extends Component {
                             fontWeight: 400,
                         }}
                     >
-                        Sisa karakter: {this.state.chartLeft}
+                        Characters left: {this.state.chartLeft}
                     </Text>
                     <FormNewNote
                         title={this.state.title}

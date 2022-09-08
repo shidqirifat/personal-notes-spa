@@ -308,6 +308,35 @@ a {
   gap: 8px;
 }
 
+.delete-notif-wrapper {
+  position: fixed;
+  z-index: 3;
+  right: -1000px;
+  bottom: 10px;
+  opacity: 0;
+  padding: 14px 20px;
+  border-radius: 6px;
+  background-color: red;
+  transition: 300ms all ease-in-out;
+}
+
+.delete-notif-wrapper.active {
+  right: 10px;
+  opacity: 1;
+  /* animation: inNotif 300ms 1 ease-in-out both; */
+}
+
+/* @keyframes inNotif {
+  from {
+    right: -100px;
+  }
+
+  to {
+    right: 10px;
+    opacity: 1;
+  }
+} */
+
 .footer-container {
   padding-top: 40px;
   display: flex;

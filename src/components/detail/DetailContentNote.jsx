@@ -1,6 +1,7 @@
 import React from 'react'
 import { showFormattedDate } from '../../utils'
 import Text from '../Text'
+import PropTypes from 'prop-types';
 
 export default function DetailContentNote({ title, body, createdAt, onInputTitle, onInputBody }) {
   return (
@@ -16,4 +17,12 @@ export default function DetailContentNote({ title, body, createdAt, onInputTitle
       <Text type="text-detail-note" onBlur={onInputBody}>{body}</Text>
     </div>
   )
+}
+
+DetailContentNote.propTypes = {
+  title: PropTypes.string.isRequired,
+  body: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
+  onInputTitle: PropTypes.func.isRequired,
+  onInputBody: PropTypes.func.isRequired,
 }

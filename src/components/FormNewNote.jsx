@@ -14,7 +14,7 @@ export default function FormNewNote({
                 type="text"
                 value={title}
                 name="title"
-                placeholder="Masukkan judul catatan..."
+                placeholder="Insert title note..."
                 onChange={(event) => onInputEventHandler(event)}
                 required
                 autoFocus
@@ -23,12 +23,12 @@ export default function FormNewNote({
                 type="text"
                 value={description}
                 name="description"
-                placeholder="Masukkan deskripsi catatan..."
+                placeholder="Insert description note..."
                 onChange={(event) => onInputEventHandler(event)}
                 required
             />
             <ButtonAction type="submit" title={title} description={description} isPrimary>
-                Buat Catatan
+                Add Note
             </ButtonAction>
         </form>
     );

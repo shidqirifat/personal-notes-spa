@@ -7,6 +7,7 @@ import Header from '../components/detail/Header';
 import { getNote, deleteNote, handleArchiveNote, editNote } from '../utils/data';
 import '../styles/detail.css';
 import Text from '../components/Text';
+import PropTypes from 'prop-types';
 
 export default function PageDetailNoteWrapper() {
   const { id } = useParams();
@@ -32,7 +33,7 @@ class PageDetailNote extends Component {
 
   handleDeleteNote = () => {
     deleteNote(this.props.id);
-    this.props.navigate('/');
+    this.props.navigate('/', { state: { deleteStatus: true } });
   }
 
   handleArchiveNote() {
@@ -71,7 +72,7 @@ class PageDetailNote extends Component {
         <Header />
         <Link to="/" className="anchor-back-wrapper">
           <img className="icon-anchor-back" src="/assets/right-arrow.png" alt="arrow" />
-          <Text type="text-anchor-back">Kembali</Text>
+          <Text type="text-anchor-back">Back</Text>
         </Link>
         <DetailContentNote {...this.state.notes} onInputTitle={this.onInputTitle} onInputBody={this.onInputBody} />
         <ButtonActionRoundedWrapper>
@@ -81,4 +82,9 @@ class PageDetailNote extends Component {
       </div>
     )
   }
+}
+
+PageDetailNote.propTypes = {
+  id: PropTypes.string.isRequired,
+  navigate: PropTypes.func.isRequired,
 }

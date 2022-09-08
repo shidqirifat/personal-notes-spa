@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import "../styles/text.css";
 
-export default function Text({ type, style, children, dataPlaceholder, onClick, onBlur }) {
+export default function Text({ type, style, children, onClick, onBlur }) {
     switch (type) {
         case "title-page":
             return (
@@ -88,6 +88,12 @@ export default function Text({ type, style, children, dataPlaceholder, onClick, 
                     {children}
                 </h1>
             );
+        case "text-delete-notif":
+            return (
+                <h3 onClick={onClick} className={type} style={style}>
+                    {children}
+                </h3>
+            );
         default:
             return (
                 <h3 onClick={onClick} style={style}>
@@ -101,5 +107,6 @@ Text.propTypes = {
     type: PropTypes.string.isRequired,
     style: PropTypes.object,
     onClick: PropTypes.func,
+    onBlur: PropTypes.func,
     children: PropTypes.node,
 }

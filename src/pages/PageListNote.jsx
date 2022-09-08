@@ -1,5 +1,6 @@
+/* eslint-disable no-restricted-globals */
 import React, { Component } from 'react'
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import ButtonActionRounded from '../components/ButtonActionRounded';
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
@@ -9,16 +10,22 @@ import WrapCardNote from '../components/WrapCardNote';
 import { handleArchiveNote, deleteNote, generateQuotes, getAllNotes, getNavigationsLink } from '../utils/data';
 import PropTypes from 'prop-types';
 import ButtonActionRoundedWrapper from '../components/ButtonActionRoundedWrapper';
+import DeleteNotification from '../components/DeleteNotification';
 
 export default function PageListNoteWrapper({ pageActive }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const keyword = searchParams.get('keyword');
+
+  const clearHistory = () => {
+    history.replaceState('', null);
+  }
 
   const changeSearchParams = (keyword) => {
     setSearchParams({ keyword });
   }
 
-  return <PageListNote defaultKeyword={keyword} keywordChange={changeSearchParams} pageActive={pageActive} />
+  return <PageListNote defaultKeyword={keyword} keywordChange={changeSearchParams} pageActive={pageActive} deleteStatus={location.state?.deleteStatus || false} clearHistory={clearHistory} />
 }
 
 PageListNoteWrapper.propTypes = {
@@ -38,6 +45,7 @@ class PageListNote extends Component {
       isAddNote: false,
       idMenuActive: '',
       isLoading: true,
+      deleteNotif: false
     };
 
     this.onSearchNoteHandler = this.onSearchNoteHandler.bind(this);
@@ -48,20 +56,16 @@ class PageListNote extends Component {
     this.onDeleteNoteHandler = this.onDeleteNoteHandler.bind(this);
     this.onArchiveNoteHandler = this.onArchiveNoteHandler.bind(this);
     this.generateRandomQuotes = this.generateRandomQuotes.bind(this);
-    this.setTimeLoading = this.setTimeLoading.bind(this);
+    this.setActionDuration = this.setActionDuration.bind(this);
   }
 
   onSearchNoteHandler(event) {
     const keyword = event.target.value;
 
-    this.setTimeLoading(1000);
+    this.setActionDuration('isLoading', 1000);
     this.setState((prevState) => ({
       ...prevState,
       keyword,
-      textEmpty:
-        keyword.length > 0
-          ? "Catatan Yang Dicari Tidak Ditemukan"
-          : "Kamu Belum Memiliki Catatan",
     }));
 
     this.props.keywordChange(keyword)
@@ -85,7 +89,7 @@ class PageListNote extends Component {
   onAddNewNoteHandler(event, note) {
     event.preventDefault();
 
-    this.setTimeLoading(1000);
+    this.setActionDuration('isLoading', 1000);
     this.setState((prevState) => ({
       ...prevState,
       notes: [
@@ -113,19 +117,24 @@ class PageListNote extends Component {
 
   onDeleteNoteHandler(event, id) {
     event.stopPropagation();
-    this.setTimeLoading(1000);
+    this.setActionDuration('isLoading', 1000);
 
     deleteNote(id);
+    this.setState((prevState) => ({
+      ...prevState,
+      notes: getAllNotes()
+    }));
   }
 
   onArchiveNoteHandler(event, id) {
     event.stopPropagation();
-    this.setTimeLoading(1000);
+    this.setActionDuration('isLoading', 1000);
 
     handleArchiveNote(id);
     this.setState((prevState) => ({
       ...prevState,
       idMenuActive: null,
+      notes: getAllNotes()
     }));
   }
 
@@ -138,29 +147,39 @@ class PageListNote extends Component {
     }));
   }
 
-  setTimeLoading(miliseconds) {
-    this.setState((prevState) => ({
-      ...prevState,
-      isLoading: true,
-    }));
+  renderNotifDeleteNote() {
+
+  }
+
+  setActionDuration(action, miliseconds, isDelay = false) {
+    setTimeout(() => {
+      this.setState((prevState) => ({
+        ...prevState,
+        [action]: true,
+      }));
+    }, isDelay ? 10 : 0);
 
     setTimeout(() => {
       this.setState((prevState) => ({
         ...prevState,
-        isLoading: false,
+        [action]: false,
       }));
     }, miliseconds);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.pageActive !== this.props.pageActive) {
-      this.setTimeLoading(1000);
+      this.setActionDuration('isLoading', 1000);
     }
   }
 
   componentDidMount() {
     this.generateRandomQuotes();
-    this.setTimeLoading(1000);
+    this.setActionDuration('isLoading', 1000);
+
+    if (!this.props.deleteStatus) return;
+    this.setActionDuration('deleteNotif', 5000, true);
+    this.props.clearHistory();
   }
 
   render() {
@@ -187,17 +206,20 @@ class PageListNote extends Component {
       const { notes, keyword } = this.state;
       const { pageActive } = this.props;
 
-      if (notes.length === 0) return "Kamu Belum Memiliki Catatan Saat Ini";
-      if (!keyword && pageActive === 'archived') return "Tidak Ada Catatan Diarsipkan Saat Ini";
-      if (!keyword && pageActive === 'active') return "Tidak Ada Catatan Aktif Saat Ini";
+      if (notes.length === 0) return "You Do Not Have a Note";
+      if (!keyword && pageActive === 'archived') return "No Archived Note";
+      if (!keyword && pageActive === 'active') return "No Active Note";
 
-      return "Catatan Yang Dicari Tidak Ditemukan";
+      return "Search Note Is Not Found";
     }
 
     const textEmpty = renderTextEmpty();
 
     return (
       <>
+        <DeleteNotification
+          deleteNotif={this.state.deleteNotif}
+        />
         {this.state.isAddNote && (
           <NewNote
             onSubmitNewNote={this.onAddNewNoteHandler}
@@ -238,5 +260,7 @@ class PageListNote extends Component {
 PageListNote.propTypes = {
   defaultKeyword: PropTypes.string,
   keywordChange: PropTypes.func,
-  pageActive: PropTypes.string
+  pageActive: PropTypes.string,
+  deleteStatus: PropTypes.bool,
+  clearHistory: PropTypes.func
 }
