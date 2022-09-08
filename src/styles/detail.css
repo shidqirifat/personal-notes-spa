@@ -1,6 +1,11 @@
 .page-detail-wrapper {
   max-width: 1000px;
+  padding-bottom: 120px;
   margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .header-detail {

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import "../styles/text.css";
+import "../../styles/text.css";
 
 export default function Text({ type, style, children, onClick, onBlur }) {
     switch (type) {

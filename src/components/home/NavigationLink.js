@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Text from "./Text";
+import Text from "../global/Text";
 import PropTypes from 'prop-types';
 
 export default function NavigationLink({

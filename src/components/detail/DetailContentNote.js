@@ -1,6 +1,6 @@
-import React from 'react'
-import { showFormattedDate } from '../../utils'
-import Text from '../Text'
+import React from 'react';
+import { showFormattedDate } from '../../utils';
+import Text from '../global/Text';
 import PropTypes from 'prop-types';
 
 export default function DetailContentNote({ title, body, createdAt, onInputTitle, onInputBody }) {

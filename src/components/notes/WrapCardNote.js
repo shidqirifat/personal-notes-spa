@@ -1,8 +1,8 @@
 import React from "react";
 import CardNote from "./CardNote";
 import EmptyNotes from "./EmptyNotes";
-import Loader from "./Loader";
-import PropTypes from 'prop-types';
+import Loader from "../global/Loader";
+import PropTypes from "prop-types";
 
 export default function WrapCardNote({
     loading,
@@ -45,4 +45,4 @@ WrapCardNote.propTypes = {
     onOpenMenuNote: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onArchiveNote: PropTypes.func.isRequired,
-}
+};

@@ -6,6 +6,6 @@ const showFormattedDate = (date) => {
     day: 'numeric',
   };
   return new Date(date).toLocaleDateString('id-ID', options);
-};
+}
 
 export { showFormattedDate };

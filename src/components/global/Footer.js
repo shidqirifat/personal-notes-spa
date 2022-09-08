@@ -1,6 +1,6 @@
 import React from "react";
-import LinkExternal from "./LinkExternal";
-import Text from "./Text";
+import LinkExternal from "../global/LinkExternal";
+import Text from "../global/Text";
 
 export default function Footer() {
     return (

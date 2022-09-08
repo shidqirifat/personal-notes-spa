@@ -1,5 +1,5 @@
-import React from 'react'
-import Text from '../Text'
+import React from 'react';
+import Text from '../global/Text';
 
 export default function Header() {
   return (

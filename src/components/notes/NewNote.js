@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import FormNewNote from "./FormNewNote";
-import Text from "./Text";
-import PropTypes from 'prop-types';
+import Text from "../global/Text";
+import PropTypes from "prop-types";
 
 export default class NewNote extends Component {
     constructor(props) {
@@ -86,4 +86,4 @@ export default class NewNote extends Component {
 NewNote.propTypes = {
     onOpenAddNote: PropTypes.func.isRequired,
     onSubmitNewNote: PropTypes.func.isRequired,
-}
+};

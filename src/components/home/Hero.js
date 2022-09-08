@@ -1,7 +1,7 @@
 import React from "react";
 import Quotes from "./Quotes";
 import SearchBox from "./SearchBox";
-import Text from "./Text";
+import Text from "../global/Text";
 import PropTypes from 'prop-types';
 
 export default function Hero({ onSearchNote, keyword, author, text }) {

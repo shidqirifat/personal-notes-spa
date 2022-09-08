@@ -1,9 +1,9 @@
 import React from "react";
-import { showFormattedDate } from "../utils";
-import Box from "./Box";
+import { showFormattedDate } from "../../utils";
+import Box from "../global/Box";
 import MenuCardNote from "./MenuCardNote";
-import Text from "./Text";
-import PropTypes from 'prop-types';
+import Text from "../global/Text";
+import PropTypes from "prop-types";
 
 export default function CardNote({
     title,
@@ -25,7 +25,7 @@ export default function CardNote({
                 position: "relative",
                 cursor: "pointer",
                 boxShadow: "rgba(17, 12, 46, 0.05) 0px 2px 20px 0px",
-                height: '100%'
+                height: "100%",
             }}
         >
             {idMenuActive === id && (
@@ -88,4 +88,4 @@ CardNote.propTypes = {
     onOpenMenuNote: PropTypes.func.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onArchiveNote: PropTypes.func.isRequired,
-}
+};
