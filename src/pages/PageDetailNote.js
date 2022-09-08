@@ -30,8 +30,6 @@ class PageDetailNote extends Component {
             notes: getNote(props.id),
         };
 
-        console.log(this.state.notes);
-
         this.handleDeleteNote = this.handleDeleteNote.bind(this);
         this.handleArchiveNote = this.handleArchiveNote.bind(this);
         this.updateDetailNote = this.updateDetailNote.bind(this);
@@ -42,7 +40,9 @@ class PageDetailNote extends Component {
     }
 
     handleNoteNotFound() {
-        this.props.navigate('/404');
+        setTimeout(() => {
+            this.props.navigate('/404');
+        }, 10);
     }
 
     handleDeleteNote = () => {
@@ -87,9 +87,11 @@ class PageDetailNote extends Component {
     render() {
         return (
             <>
-                <Helmet>
-                    <title>{this.state.notes?.title} - My Personal Notes</title>
-                </Helmet>
+                {this.state.notes && (
+                    <Helmet>
+                        <title>{this.state.notes.title} - My Personal Notes</title>
+                    </Helmet>
+                )}
 
                 <div className="page-detail-wrapper">
                     <div>
