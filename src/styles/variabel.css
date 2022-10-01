@@ -1,9 +1,9 @@
 :root {
   --anchor-hover: #efefef;
-  --background: #FFFFFF;
-  --font: #3F3F45;
+  --background: #ffffff;
+  --font: #3f3f45;
   --font-active-nav: #efefef;
-  --font-nav: #3F3F45;
+  --font-nav: #3f3f45;
   --font-date: rgb(139, 139, 139);
   --font-action-hover: #f0f0f0;
   --font-detail: #3f3f45;
@@ -12,7 +12,7 @@
   --btn-not-found: #2d2d2d;
   --btn-not-found-hover: #1e272c;
   --border-input: #bcbcc0;
-  --placeholder: #CACACE;
+  --placeholder: #cacace;
   --box-hover: #f3f3f3;
   --border-nav: #2d3e50;
   --active-nav: #2d2d2d;
@@ -41,7 +41,7 @@
   --btn-not-found: #2d2d2d;
   --btn-not-found-hover: #1e272c;
   --border-input: #bcbcc0;
-  --placeholder: #CACACE;
+  --placeholder: #cacace;
   --box-hover: rgb(99, 99, 99);
   --border-nav: #fff;
   --active-nav: rgb(72, 73, 77);

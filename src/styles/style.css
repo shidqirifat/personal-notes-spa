@@ -88,7 +88,7 @@ a {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
 .box-wrapper:hover,
@@ -176,7 +176,6 @@ a {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #bcbcc0;
-  ;
 }
 
 .new-note-wrapper {
@@ -257,7 +256,7 @@ a {
 }
 
 .button-submit:disabled {
-  color: #3F3F45;
+  color: #3f3f45;
   cursor: default;
   background: var(--btn-secondary-hover);
   border: 1px solid var(--btn-submit-disabled);
