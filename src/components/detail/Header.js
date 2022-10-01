@@ -38,12 +38,14 @@ export default function Header({ user, toggleLocale, toggleTheme, logout }) {
             color={theme === 'light' ? '3f3f45' : 'efefef'}
           />
         </button>
-        <button onClick={logout} className="logout-button">
-          <FiLogOut className="icon" size={30} color={theme === 'light' ? '3f3f45' : 'efefef'} />
-          <Text type="user" style={{ textTransform: 'capitalize', margin: 0 }}>
-            {user}
-          </Text>
-        </button>
+        {user && (
+          <button onClick={logout} className="logout-button">
+            <FiLogOut className="icon" size={30} color={theme === 'light' ? '3f3f45' : 'efefef'} />
+            <Text type="user" style={{ textTransform: 'capitalize', margin: 0 }}>
+              {user}
+            </Text>
+          </button>
+        )}
       </div>
     </div>
   );
