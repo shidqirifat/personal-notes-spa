@@ -74,7 +74,7 @@ export default function CardNote({
                         }}
                         type="text-date"
                     >
-                        Archived
+                        {locale === "en" ? "Archived" : "Diarsipkan"}
                     </Text>
                 )}
             </div>

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import Text from "../global/Text";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import ConfigContext from "../../context/ConfigContext";
 
 export default function MenuCardNote({
     onDeleteNote,
@@ -8,6 +9,7 @@ export default function MenuCardNote({
     archived,
     id,
 }) {
+    const { locale } = useContext(ConfigContext);
     return (
         <div className="wrap-menu-card">
             <Text
@@ -24,7 +26,7 @@ export default function MenuCardNote({
                 }}
                 type="text-action"
             >
-                Delete
+                {locale === "en" ? "Delete" : "Hapus"}
             </Text>
             <Text
                 onClick={(e) => {
@@ -39,7 +41,13 @@ export default function MenuCardNote({
                 }}
                 type="text-action"
             >
-                {archived ? "Unarchive" : "Archive"}
+                {archived
+                    ? locale === "en"
+                        ? "Unarchive"
+                        : "Batal Arsipkan"
+                    : locale === "en"
+                    ? "Archive"
+                    : "Arsipkan"}
             </Text>
         </div>
     );
@@ -50,4 +58,4 @@ MenuCardNote.propTypes = {
     archived: PropTypes.bool.isRequired,
     onDeleteNote: PropTypes.func.isRequired,
     onArchiveNote: PropTypes.func.isRequired,
-}
+};
