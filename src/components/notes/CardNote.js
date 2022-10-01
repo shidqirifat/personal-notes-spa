@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { showFormattedDate } from "../../utils";
 import Box from "../global/Box";
 import MenuCardNote from "./MenuCardNote";
 import Text from "../global/Text";
 import PropTypes from "prop-types";
+import ConfigContext from "../../context/ConfigContext";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 export default function CardNote({
     title,
@@ -16,6 +18,7 @@ export default function CardNote({
     onDeleteNote,
     onArchiveNote,
 }) {
+    const { locale, theme } = useContext(ConfigContext);
     return (
         <Box
             id={id}
@@ -40,22 +43,24 @@ export default function CardNote({
                 <Text style={{ marginBottom: 0 }} type="title-note">
                     {title}
                 </Text>
-                <img
+                <button
                     onClick={(e) => {
                         e.preventDefault();
                         onOpenMenuNote(e, id);
                     }}
-                    className="menu-card-icon"
-                    src="assets/menu-three-dot.png"
-                    alt="Menu"
-                />
+                >
+                    <BsThreeDotsVertical
+                        size={24}
+                        color={theme === "light" ? "111" : "fff"}
+                    />
+                </button>
             </div>
             <div className="wrap-note label-archived">
                 <Text
                     style={{ marginBottom: 0, fontWeight: 400 }}
                     type="text-date"
                 >
-                    {showFormattedDate(createdAt)}
+                    {showFormattedDate(createdAt, locale)}
                 </Text>
                 {archived && (
                     <Text

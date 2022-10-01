@@ -1,31 +1,33 @@
 .title-page {
-    color: #3F3F45;
+    color: var(--font);
     font-size: 2rem;
     font-weight: 600;
+    width: min-content;
+    text-align: left;
 }
 
 .title-section {
-    color: #3F3F45;
+    color: var(--font);
     font-size: 1.5rem;
     font-weight: 400;
     margin: 16px 0;
 }
 
 .title-note {
-    color: #3F3F45;
+    color: var(--font);
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 4px;
 }
 
 .paragraph {
-    color: #3F3F45;
+    color: var(--font);
     font-size: 0.9rem;
     line-height: 22px;
 }
 
 .text-note {
-    color: #3F3F45;
+    color: var(--font);
     font-size: 0.9rem;
     line-height: 21px;
     overflow: hidden;
@@ -38,37 +40,37 @@
 
 .text-date,
 .text-detail-date {
-    color: rgb(139, 139, 139);
+    color: var(--font-date);
     font-size: 0.75rem;
     margin-bottom: 4px;
 }
 
 .text-action,
 .text-navigation {
-    color: #3F3F45;
+    color: var(--font);
     font-size: 0.8rem;
     font-weight: 700;
     transition: all .2s;
 }
 
 .text-navigation {
-    color: #fff;
+    color: var(--background);
 }
 
 .text-action:hover {
-    background-color: #f0f0f0;
+    background-color: var(--font-action-hover);
 }
 
 .title-detail-note {
     font-size: 2.6rem;
     font-weight: 700;
     line-height: 56px;
-    color: #3f3f45;
+    color: var(--font-detail);
 }
 
 .text-detail-date {
     font-size: 1rem;
-    color: rgb(100, 100, 100);
+    color: var(--font-detail-date);
     font-weight: 400;
     line-height: 16px;
     margin-top: 8px;
@@ -77,27 +79,47 @@
 
 .text-detail-note {
     font-size: 1.1rem;
-    color: #3F3F45;
+    color: var(--font);
     line-height: 26px;
 }
 
 .text-anchor-back {
     font-weight: 600;
     font-size: 1.3rem;
-    color: #3F3F45;
+    color: var(--font);
     line-height: 32px;
 }
 
 .text-not-found {
     font-size: 1rem;
-    color: white;
+    color: var(--text-btn-not-found);
+    ;
     font-weight: 600;
     line-height: 38px;
 }
 
 .text-delete-notif {
     font-size: 1rem;
-    color: white;
+    color: var(--text-btn-not-found);
     font-weight: 400;
     line-height: 26px;
+}
+
+.user {
+    color: var(--font);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+@media only screen and (min-width: 512px) {
+    .title-page {
+        width: auto;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    .user {
+        display: none;
+    }
 }

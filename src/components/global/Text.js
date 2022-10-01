@@ -1,8 +1,8 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import "../../styles/text.css";
 
-export default function Text({ type, style, children, onClick, onBlur }) {
+export default function Text({ type, style, children, onClick }) {
     switch (type) {
         case "title-page":
             return (
@@ -17,6 +17,12 @@ export default function Text({ type, style, children, onClick, onBlur }) {
                 </h2>
             );
         case "title-note":
+            return (
+                <h3 onClick={onClick} className={type} style={style}>
+                    {children}
+                </h3>
+            );
+        case "user":
             return (
                 <h3 onClick={onClick} className={type} style={style}>
                     {children}
@@ -60,9 +66,9 @@ export default function Text({ type, style, children, onClick, onBlur }) {
             );
         case "title-detail-note":
             return (
-                <h2 onClick={onClick} className={type} style={style} contentEditable suppressContentEditableWarning={true} onBlur={onBlur}>
+                <h2 onClick={onClick} className={type} style={style}>
                     {children}
-                </h2 >
+                </h2>
             );
         case "text-detail-date":
             return (
@@ -72,7 +78,7 @@ export default function Text({ type, style, children, onClick, onBlur }) {
             );
         case "text-detail-note":
             return (
-                <p onClick={onClick} className={type} style={style} contentEditable suppressContentEditableWarning={true} onBlur={onBlur}>
+                <p onClick={onClick} className={type} style={style}>
                     {children}
                 </p>
             );
@@ -109,4 +115,4 @@ Text.propTypes = {
     onClick: PropTypes.func,
     onBlur: PropTypes.func,
     children: PropTypes.node,
-}
+};

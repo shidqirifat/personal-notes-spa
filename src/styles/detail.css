@@ -1,27 +1,22 @@
+@import url("variabel.css");
+
 .page-detail-wrapper {
+  margin: 10px auto 15px;
+  padding: 0 20px 120px;
   max-width: 1000px;
-  padding-bottom: 120px;
-  margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.header-detail {
-  padding: 12px 10px;
-  border-bottom: 1px solid #bcbcc0;
-}
-
 .content-detail-wrapper {
   margin-top: 60px;
-  padding: 0 16px;
 }
 
 .anchor-back-wrapper {
-  margin-left: 12px;
   margin-top: 12px;
-  padding: 4px 12px;
+  padding: 4px 10px;
   width: max-content;
   transition: 0.3s all;
   border-radius: 6px;
@@ -31,7 +26,7 @@
 }
 
 .anchor-back-wrapper:hover {
-  background-color: #efefef;
+  background-color: var(--anchor-hover-color);
 }
 
 .icon-anchor-back {
@@ -46,7 +41,7 @@
   align-items: center;
   gap: 12px;
   height: 100vh;
-  background-color: #FFFFFF;
+  background-color: var(--backround-color);
 }
 
 .page-not-found img {
@@ -57,12 +52,12 @@
 
 .button-not-found {
   padding: 4px 16px;
-  background-color: #37474F;
+  background-color: var(--btn-not-found);
   border-radius: 8px;
   width: max-content;
   transition: 0.3s all;
 }
 
 .button-not-found:hover {
-  background-color: #263238;
+  background-color: var(--btn-not-found-hover);
 }

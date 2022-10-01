@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import ButtonAction from "../global/ButtonAction";
 import PropTypes from "prop-types";
+import ConfigContext from "../../context/ConfigContext";
 
 export default function FormNewNote({
     title,
@@ -8,13 +9,18 @@ export default function FormNewNote({
     onInputEventHandler,
     onSubmitNewNote,
 }) {
+    const { locale } = useContext(ConfigContext);
     return (
         <form onSubmit={onSubmitNewNote} className="form-wrapper">
             <input
                 type="text"
                 value={title}
                 name="title"
-                placeholder="Insert title note..."
+                placeholder={
+                    locale === "en"
+                        ? "Insert title note..."
+                        : "Masukkan judul catatan..."
+                }
                 onChange={(event) => onInputEventHandler(event)}
                 required
                 autoFocus
@@ -23,17 +29,20 @@ export default function FormNewNote({
                 type="text"
                 value={description}
                 name="description"
-                placeholder="Insert description note..."
+                placeholder={
+                    locale === "en"
+                        ? "Insert description note..."
+                        : "Masukkan deskripsi catatan..."
+                }
                 onChange={(event) => onInputEventHandler(event)}
                 required
             />
             <ButtonAction
                 type="submit"
-                title={title}
-                description={description}
+                disabled={title === "" || description === ""}
                 isPrimary
             >
-                Add Note
+                {locale === "en" ? "Add Note" : "Tambah Catatan"}
             </ButtonAction>
         </form>
     );

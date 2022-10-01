@@ -1,13 +1,27 @@
 import React from "react";
 import Quotes from "./Quotes";
 import SearchBox from "./SearchBox";
-import Text from "../global/Text";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import Header from "../detail/Header";
 
-export default function Hero({ onSearchNote, keyword, author, text }) {
+export default function Hero({
+    user,
+    onSearchNote,
+    keyword,
+    author,
+    text,
+    logout,
+    toggleLocale,
+    toggleTheme,
+}) {
     return (
         <div className="hero-wrapper">
-            <Text type="title-page">Personal Notes</Text>
+            <Header
+                user={user}
+                toggleLocale={toggleLocale}
+                toggleTheme={toggleTheme}
+                logout={logout}
+            />
             <Quotes author={author} text={text} />
             <SearchBox keyword={keyword} onSearch={onSearchNote} />
         </div>
@@ -19,4 +33,8 @@ Hero.propTypes = {
     keyword: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     onSearchNote: PropTypes.func.isRequired,
-}
+    logout: PropTypes.func.isRequired,
+    toggleLocale: PropTypes.func.isRequired,
+    toggleTheme: PropTypes.func.isRequired,
+    user: PropTypes.string.isRequired,
+};

@@ -1,22 +1,21 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export default function ButtonAction({
     type,
-    title,
-    description,
+    disabled,
     onClick,
     style,
     children,
-    isPrimary
+    isPrimary,
 }) {
     return (
         <button
             type={type}
             onClick={onClick}
             style={style}
-            disabled={type === "submit" && (title === "" || description === "")}
-            className={`${isPrimary ? 'button-submit' : 'button-secondary'}`}
+            disabled={disabled}
+            className={`${isPrimary ? "button-submit" : "button-secondary"}`}
         >
             {children}
         </button>
@@ -25,10 +24,9 @@ export default function ButtonAction({
 
 ButtonAction.propTypes = {
     type: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    description: PropTypes.string,
     onClick: PropTypes.func,
     isPrimary: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool,
     style: PropTypes.object,
-    children: PropTypes.node.isRequired
-}
+    children: PropTypes.node.isRequired,
+};

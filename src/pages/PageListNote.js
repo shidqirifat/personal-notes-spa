@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import ButtonActionRounded from "../components/global/ButtonActionRounded";
 import Footer from "../components/global/Footer";
@@ -8,23 +8,36 @@ import NavigationWrapper from "../components/home/NavigationWrapper";
 import NewNote from "../components/notes/NewNote";
 import WrapCardNote from "../components/notes/WrapCardNote";
 import {
-    handleArchiveNote,
-    deleteNote,
     generateQuotes,
-    getAllNotes,
     getNavigationsLink,
-    addNote,
+    templateTextEmpty,
 } from "../utils/data";
 import PropTypes from "prop-types";
 import ButtonActionRoundedWrapper from "../components/global/ButtonActionRoundedWrapper";
 import DeleteNotification from "../components/global/DeleteNotification";
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 import { capitalize } from "../utils";
+import {
+    getActiveNotes,
+    getArchivedNotes,
+    addNote,
+    deleteNote,
+    archiveNote,
+    unarchiveNote,
+} from "../utils/api";
+import ConfigContext from "../context/ConfigContext";
 
-export default function PageListNoteWrapper({ pageActive }) {
+export default function PageListNoteWrapper({
+    authUser,
+    pageActive,
+    logout,
+    toggleLocale,
+    toggleTheme,
+}) {
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
     const keyword = searchParams.get("keyword");
+    const { locale } = useContext(ConfigContext);
 
     const clearHistory = () => {
         history.replaceState("", null);
@@ -36,24 +49,33 @@ export default function PageListNoteWrapper({ pageActive }) {
 
     return (
         <PageListNote
+            authUser={authUser}
             defaultKeyword={keyword}
             keywordChange={changeSearchParams}
             pageActive={pageActive}
             deleteStatus={location.state?.deleteStatus || false}
             clearHistory={clearHistory}
+            logout={logout}
+            toggleLocale={toggleLocale}
+            locale={locale}
+            toggleTheme={toggleTheme}
         />
     );
 }
 
 PageListNoteWrapper.propTypes = {
     pageActive: PropTypes.string,
+    logout: PropTypes.func,
+    toggleLocale: PropTypes.func,
+    toggleTheme: PropTypes.func,
+    authUser: PropTypes.object.isRequired,
 };
 
 class PageListNote extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            notes: getAllNotes(),
+            notes: [],
             keyword: props.defaultKeyword || "",
             quotes: {
                 text: "",
@@ -66,7 +88,6 @@ class PageListNote extends Component {
         };
 
         this.onSearchNoteHandler = this.onSearchNoteHandler.bind(this);
-        this.searchNotesByKeyword = this.searchNotesByKeyword.bind(this);
         this.onAddNewNoteHandler = this.onAddNewNoteHandler.bind(this);
         this.onOpenAddNoteHandler = this.onOpenAddNoteHandler.bind(this);
         this.onOpenMenuNoteHandler = this.onOpenMenuNoteHandler.bind(this);
@@ -74,26 +95,19 @@ class PageListNote extends Component {
         this.onArchiveNoteHandler = this.onArchiveNoteHandler.bind(this);
         this.generateRandomQuotes = this.generateRandomQuotes.bind(this);
         this.setActionDuration = this.setActionDuration.bind(this);
+        this.handleGetNotes = this.handleGetNotes.bind(this);
     }
 
     onSearchNoteHandler(event) {
         const keyword = event.target.value;
 
-        this.setActionDuration("isLoading", 1000);
+        this.setActionDuration("isLoading", 500);
         this.setState((prevState) => ({
             ...prevState,
             keyword,
         }));
 
         this.props.keywordChange(keyword);
-    }
-
-    searchNotesByKeyword(title, keyword) {
-        for (let i = 0; i < keyword.length; i++) {
-            if (keyword[i].toLowerCase() !== title[i].toLowerCase())
-                return false;
-        }
-        return true;
     }
 
     onOpenAddNoteHandler() {
@@ -103,14 +117,18 @@ class PageListNote extends Component {
         }));
     }
 
-    onAddNewNoteHandler(event, note) {
+    async onAddNewNoteHandler(event, note) {
         event.preventDefault();
-        this.setActionDuration("isLoading", 1000);
+        this.setState({
+            isLoading: true,
+        });
 
-        addNote({ title: note.title, body: note.description })
+        await addNote({ title: note.title, body: note.description });
+        await this.handleGetNotes();
         this.setState((prevState) => ({
             ...prevState,
             keyword: "",
+            isLoading: false,
         }));
     }
 
@@ -123,26 +141,35 @@ class PageListNote extends Component {
         }));
     }
 
-    onDeleteNoteHandler(event, id) {
+    async onDeleteNoteHandler(event, id) {
         event.stopPropagation();
-        this.setActionDuration("isLoading", 1000);
+        this.setState({
+            isLoading: true,
+        });
 
-        deleteNote(id);
+        await deleteNote(id);
+        await this.handleGetNotes();
         this.setState((prevState) => ({
             ...prevState,
-            notes: getAllNotes(),
+            isLoading: false,
         }));
     }
 
-    onArchiveNoteHandler(event, id) {
+    async onArchiveNoteHandler(event, id) {
         event.stopPropagation();
-        this.setActionDuration("isLoading", 1000);
+        this.setState({
+            isLoading: true,
+        });
 
-        handleArchiveNote(id);
+        const selectedNote = this.state.notes.find((note) => note.id === id);
+        if (selectedNote.archived) await unarchiveNote(id);
+        else await archiveNote(id);
+
+        await this.handleGetNotes();
         this.setState((prevState) => ({
             ...prevState,
             idMenuActive: null,
-            notes: getAllNotes(),
+            isLoading: false,
         }));
     }
 
@@ -174,15 +201,31 @@ class PageListNote extends Component {
         }, miliseconds);
     }
 
-    componentDidUpdate(prevProps) {
+    async handleGetNotes() {
+        this.setState({
+            isLoading: true,
+        });
+        const { data } =
+            this.props.pageActive === "active"
+                ? await getActiveNotes()
+                : await getArchivedNotes();
+        this.setState((prevState) => ({
+            ...prevState,
+            notes: data,
+            isLoading: false,
+        }));
+    }
+
+    async componentDidUpdate(prevProps) {
         if (prevProps.pageActive !== this.props.pageActive) {
-            this.setActionDuration("isLoading", 1000);
+            await this.handleGetNotes();
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this.handleGetNotes();
+
         this.generateRandomQuotes();
-        this.setActionDuration("isLoading", 1000);
 
         if (!this.props.deleteStatus) return;
         this.setActionDuration("deleteNotif", 5000, true);
@@ -190,45 +233,38 @@ class PageListNote extends Component {
     }
 
     render() {
-        const isFilterArchived = (note, pageActive) => {
-            if (pageActive === "archived") return note.archived;
-            if (pageActive === "active") return !note.archived;
+        const renderTextEmpty = () => {
+            const { notes, keyword } = this.state;
+            const { pageActive, locale } = this.props;
 
-            return note;
+            if (notes.length === 0) return templateTextEmpty[locale].empty_note;
+            if (!keyword && pageActive === "archived")
+                return templateTextEmpty[locale].empty_archived;
+            if (!keyword && pageActive === "active")
+                return templateTextEmpty[locale].empty_active;
+
+            return templateTextEmpty[locale].not_found;
         };
 
-        const notes = getAllNotes()
+        const notes = this.state.notes
             .filter((note) => {
-                return (
-                    note.title
-                        .toLowerCase()
-                        .includes(this.state.keyword.toLowerCase()) &&
-                    isFilterArchived(note, this.props.pageActive)
-                );
+                return note.title
+                    .toLowerCase()
+                    .includes(this.state.keyword.toLowerCase());
             })
             .sort((a, b) =>
                 b.createdAt < a.createdAt
                     ? -1
                     : b.createdAt > a.createdAt
-                        ? 1
-                        : 0
+                    ? 1
+                    : 0
             );
-
-        const renderTextEmpty = () => {
-            const { notes, keyword } = this.state;
-            const { pageActive } = this.props;
-
-            if (notes.length === 0) return "You Do Not Have a Note";
-            if (!keyword && pageActive === "archived")
-                return "No Archived Note";
-            if (!keyword && pageActive === "active") return "No Active Note";
-
-            return "Search Note Is Not Found";
-        };
 
         const textEmpty = renderTextEmpty();
 
-        const titlePage = this.props.pageActive ? `${this.props.pageActive} Note - ` : '';
+        const titlePage = this.props.pageActive
+            ? `${this.props.pageActive} Note - `
+            : "";
 
         return (
             <>
@@ -245,19 +281,23 @@ class PageListNote extends Component {
                 )}
                 <div className="container-wrapper">
                     <Hero
+                        user={this.props.authUser.name}
+                        logout={this.props.logout}
+                        toggleTheme={this.props.toggleTheme}
+                        toggleLocale={this.props.toggleLocale}
                         keyword={this.state.keyword}
                         onSearchNote={this.onSearchNoteHandler}
                         {...this.state.quotes}
                     />
                     <div className="body-wrapper">
                         <NavigationWrapper
-                            navigations={getNavigationsLink()}
+                            navigations={getNavigationsLink[this.props.locale]}
                             navigationActive={this.props.pageActive}
                         />
                         <WrapCardNote
                             loading={this.state.isLoading}
                             textEmpty={textEmpty}
-                            notes={notes}
+                            notes={notes || []}
                             onDeleteNote={this.onDeleteNoteHandler}
                             onArchiveNote={this.onArchiveNoteHandler}
                             onOpenMenuNote={this.onOpenMenuNoteHandler}
@@ -283,4 +323,5 @@ PageListNote.propTypes = {
     pageActive: PropTypes.string,
     deleteStatus: PropTypes.bool,
     clearHistory: PropTypes.func,
+    authUser: PropTypes.object.isRequired,
 };

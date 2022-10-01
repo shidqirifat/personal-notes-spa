@@ -1,0 +1,50 @@
+.login-page,
+.register-page {
+  max-width: 1000px;
+  margin: 10px auto 15px;
+  padding: 0 20px;
+}
+
+.login-page h2,
+.register-page h2 {
+  font-weight: normal;
+}
+
+.login-input,
+.register-input,
+.contact-input {
+  margin-top: 16px;
+}
+
+.login-input input,
+.register-input input,
+.contact-input input {
+  display: block;
+  padding: 10px;
+  width: 100%;
+  margin: 8px 0;
+  font-size: 20px;
+  border-radius: 8px;
+}
+
+.login-input button,
+.register-input button,
+.contact-input button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 20px;
+  margin: 16px 0;
+}
+
+.not-have-account {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.not-have-account a {
+  color: var(--link);
+  text-decoration: var(--link) underline;
+  text-underline-offset: 4px;
+}

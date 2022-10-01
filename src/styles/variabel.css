@@ -1,0 +1,57 @@
+:root {
+  --anchor-hover: #efefef;
+  --background: #FFFFFF;
+  --font: #3F3F45;
+  --font-active-nav: #efefef;
+  --font-nav: #3F3F45;
+  --font-date: rgb(139, 139, 139);
+  --font-action-hover: #f0f0f0;
+  --font-detail: #3f3f45;
+  --font-detail-date: rgb(100, 100, 100);
+  --text-btn-not-found: #eee;
+  --btn-not-found: #2d2d2d;
+  --btn-not-found-hover: #1e272c;
+  --border-input: #bcbcc0;
+  --placeholder: #CACACE;
+  --box-hover: #f3f3f3;
+  --border-nav: #2d3e50;
+  --active-nav: #2d2d2d;
+  --btn-submit-hover: #1f2b38;
+  --btn-secondary-hover: #f4f4f5;
+  --btn-submit-disabled: #bcbcc0;
+  --add-note: #2d3e50;
+  --add-note-hover: #1b252f;
+  --icon-action: rgb(227, 227, 227);
+  --icon-action-hover: rgb(220, 220, 220);
+  --shadow: rgba(0, 0, 0, 0.6);
+  --link: blue;
+}
+
+[data-theme='dark'] {
+  --anchor-hover: #efefef;
+  --background: #111;
+  --font: #eee;
+  --font-active-nav: #eee;
+  --font-nav: #fff;
+  --font-date: rgb(203, 203, 203);
+  --font-action-hover: #f0f0f0;
+  --font-detail: #eee;
+  --font-detail-date: rgb(132, 132, 132);
+  --text-btn-not-found: #eee;
+  --btn-not-found: #2d2d2d;
+  --btn-not-found-hover: #1e272c;
+  --border-input: #bcbcc0;
+  --placeholder: #CACACE;
+  --box-hover: rgb(99, 99, 99);
+  --border-nav: #fff;
+  --active-nav: rgb(72, 73, 77);
+  --btn-submit-hover: rgb(142, 142, 142);
+  --btn-secondary-hover: rgb(142, 142, 142);
+  --btn-submit-disabled: #bcbcc0;
+  --add-note: #2d3e50;
+  --add-note-hover: #1b252f;
+  --icon-action: rgb(227, 227, 227);
+  --icon-action-hover: rgb(220, 220, 220);
+  --shadow: rgba(255, 255, 255, 0.3);
+  --link: lightblue;
+}

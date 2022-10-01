@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FormNewNote from "./FormNewNote";
 import Text from "../global/Text";
 import PropTypes from "prop-types";
+import { ConfigConsumer } from "../../context/ConfigContext";
 
 export default class NewNote extends Component {
     constructor(props) {
@@ -40,45 +41,57 @@ export default class NewNote extends Component {
 
     render() {
         return (
-            <>
-                <div
-                    className="shadow-overlay"
-                    onClick={this.props.onOpenAddNote}
-                />
-                <div className="new-note-wrapper">
-                    <Text
-                        type="title-section"
-                        style={{ textAlign: "center", marginTop: 0 }}
-                    >
-                        Add New Note
-                    </Text>
-                    <Text
-                        type="paragraph"
-                        style={{
-                            color:
-                                this.state.chartLeft < 4
-                                    ? "#ff5f52"
-                                    : this.state.chartLeft < 6
-                                        ? "rgb(216 198 0)"
-                                        : "#71717a",
-                            textAlign: "right",
-                            marginBottom: "8px",
-                            fontWeight: 400,
-                        }}
-                    >
-                        Characters left: {this.state.chartLeft}
-                    </Text>
-                    <FormNewNote
-                        title={this.state.title}
-                        description={this.state.description}
-                        onInputEventHandler={this.onInputEventHandler}
-                        onSubmitNewNote={(event) => {
-                            this.resetInputHandler();
-                            this.props.onSubmitNewNote(event, this.state);
-                        }}
-                    />
-                </div>
-            </>
+            <ConfigConsumer>
+                {({ locale }) => (
+                    <>
+                        <div
+                            className="shadow-overlay"
+                            onClick={this.props.onOpenAddNote}
+                        />
+                        <div className="new-note-wrapper">
+                            <Text
+                                type="title-section"
+                                style={{ textAlign: "center", marginTop: 0 }}
+                            >
+                                {locale === "en"
+                                    ? "Add New Note"
+                                    : "Tambah Catatan"}
+                            </Text>
+                            <Text
+                                type="paragraph"
+                                style={{
+                                    color:
+                                        this.state.chartLeft < 4
+                                            ? "#ff5f52"
+                                            : this.state.chartLeft < 6
+                                            ? "rgb(216 198 0)"
+                                            : "#71717a",
+                                    textAlign: "right",
+                                    marginBottom: "8px",
+                                    fontWeight: 400,
+                                }}
+                            >
+                                {locale === "en"
+                                    ? "Characters left"
+                                    : "Sisa karakter"}
+                                : {this.state.chartLeft}
+                            </Text>
+                            <FormNewNote
+                                title={this.state.title}
+                                description={this.state.description}
+                                onInputEventHandler={this.onInputEventHandler}
+                                onSubmitNewNote={(event) => {
+                                    this.resetInputHandler();
+                                    this.props.onSubmitNewNote(
+                                        event,
+                                        this.state
+                                    );
+                                }}
+                            />
+                        </div>
+                    </>
+                )}
+            </ConfigConsumer>
         );
     }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export default function LinkExternal({ link, children }) {
     return (
@@ -11,6 +11,7 @@ export default function LinkExternal({ link, children }) {
             }}
             target="_blank"
             rel="noreferrer"
+            className="footer-link"
         >
             {children}
         </a>
@@ -20,4 +21,4 @@ export default function LinkExternal({ link, children }) {
 LinkExternal.propTypes = {
     link: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
-}
+};
